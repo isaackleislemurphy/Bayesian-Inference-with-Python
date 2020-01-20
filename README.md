@@ -17,9 +17,9 @@
 
 ## To-dos before Wednesday 1/29/2020
 
-- Download Anaconda and create an empty jupyter notebook
+1. Download Anaconda and create an empty jupyter notebook
 
-- Recall key programming tasks in MATH 347 Bayesian Statistics and think about what you need to know to complete these tasks with Python. Programming tasks include but not limited to: 
+2. Recall key programming tasks in MATH 347 Bayesian Statistics and think about what you need to know to complete these tasks with Python. Programming tasks include but not limited to: 
 
     - generate random draws from a known distribution
     - plot a graph with generated draws
@@ -27,4 +27,4 @@
     - write a function
     - write a Gibbs sampler
     
-- Create and maintain a jupyter notebook to record your progress
+3. Create and maintain a jupyter notebook to record your progress
