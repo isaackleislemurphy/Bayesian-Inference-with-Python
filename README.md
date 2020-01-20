@@ -7,3 +7,9 @@
 - Computing resources
 
     - Anaconda: [link](https://www.anaconda.com/distribution/)
+    
+- Useful Bayesian + Python material
+
+    - [Bayesian Modeling in Python](https://github.com/markdregan/Bayesian-Modelling-in-Python) by Mark Regan
+    
+    - [Python code for Doing Bayesian Data Analysis](https://github.com/aloctavodia/Doing_bayesian_data_analysis) by Osvaldo Martin
