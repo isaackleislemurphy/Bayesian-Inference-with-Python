@@ -1,0 +1,143 @@
+---
+output:
+  pdf_document: default
+header-includes:
+  - \usepackage{color}
+  - \usepackage[dvipsnames]{xcolor}
+---
+----
+ Fall 2019: MATH 347 Bayesian Statistics
+---
+
+
+```{r include=FALSE}
+library(ggplot2)
+library(ProbBayes)
+crcblue <- "#2905a1"
+```
+## \textcolor{RoyalBlue}{Lab 1: Mixture of Beta Priors}
+#### Author:_____(Insert your name here) _____
+
+#### \textcolor{Bittersweet}{Total Grade for Lab 1: /15} 
+#### \textcolor{Bittersweet}{Comments (optional)} 
+
+## \textcolor{RoyalBlue}{Template for lab report}
+\textbf{Instructions:} This is the template you will use to type up your responses to the exercises. To produce a document that you can print out and turn in just click on Knit PDF above. All you need to do to complete the lab is to type up your BRIEF answers and the R code (when necessary) in the spaces provided below. 
+
+It is strongly recommended that you knit your document regularly (minimally after answering each exercise) for two reasons. 
+
+  1. Ensure that there are no errors in your code that would prevent the document from knitting.
+  2. View the instructions and your answers in a more legible, attractive format.
+
+
+```{r, eval=FALSE}
+# Any text BOTH preceded by a hashtag AND within the ```{r} ``` code chunk is a comment. 
+# R indicates a comment by turning the text green in the editor, and brown in the knitted
+# document. 
+# Comments are not treated as a command to be interpreted by the computer.
+# They normally (briefly!) describe the purpose of your command or chunk in plain English.
+# However, for this class, they will have a different goal, as the text above and below 
+# each chunk should sufficiently describe the chunk's contents.
+# For this class, comments will be used to indicate where your code should go, or to give
+# hints for what the code should look like.
+
+```
+
+## \textcolor{RoyalBlue}{Mixture of Beta Priors}
+
+Estimate the probability $p$ of teen recidivism based on a study in which there were $n = 43$ individuals released from incarceration and $y = 15$ re-offenders within 36 months.
+
+#### \textcolor{RoyalBlue}{Exercise 1: } Using a $\textrm{Beta}(2,8)$ prior for $p$, plot the prior $\pi(p)$ and the posterior $\pi(p \mid y)$ as functions of $p$. Find the posterior mean and standard deviation of $p$. Find a $95\%$ quantile-based credible interval. You can use either the exact solution or approximation through Monte Carlo simulation.
+
+```{r, eval=TRUE}
+a <- 2; b <- 8; n <- 43; y <- 15;
+
+ggplot(data = data.frame(p = c(0, 1)), aes(p)) + 
+  stat_function(fun = dbeta, args = list(shape1 = a, shape2 = b), aes(color = "prior")) +
+  stat_function(fun = dbeta, args = list(shape1 = (a+y), shape2 = (b+n-y)), 
+                aes(color = "posterior")) + 
+  ylab("Density") +
+  ggtitle("Beta(2,8) Prior")
+
+
+S <- 1000
+posteriorvalues <- rbeta(S, a+y, b+n-y)
+mean(posteriorvalues)
+sd(posteriorvalues)
+quantile(posteriorvalues, c(0.025, 0.975))
+
+beta_interval(0.95, c(a+y,b+n-y), Color = crcblue)
+```
+
+
+#### \textcolor{Bittersweet}{Grade for Exercise 1: /5} 
+#### \textcolor{Bittersweet}{Comments: }
+
+
+#### \textcolor{RoyalBlue}{Exercise 2: } Repeat Exercise 1, but using a $\textrm{Beta}(8,2)$ prior for $p$.
+```{r}
+a <- 8; b <- 2; n <- 43; y <- 15
+
+ggplot(data = data.frame(p = c(0, 1)), aes(p)) + 
+  stat_function(fun = dbeta, args = list(shape1 = a, shape2 = b), aes(color = "prior")) +
+  stat_function(fun = dbeta, args = list(shape1 = (a+y), shape2 = (b+n-y)), 
+                aes(color = "posterior")) + 
+  ylab("Density") +
+  ggtitle("Beta(8,2) Prior")
+
+S <- 1000
+posteriorvalues <- rbeta(S, a+y, b+n-y)
+mean(posteriorvalues)
+sd(posteriorvalues)
+quantile(posteriorvalues, c(0.025, 0.975))
+
+beta_interval(0.95, c(a+y,b+n-y), Color = crcblue)
+```
+
+
+
+#### \textcolor{Bittersweet}{Grade for Exercise 2: /5} 
+#### \textcolor{Bittersweet}{Comments: }
+
+
+#### \textcolor{RoyalBlue}{Exercise 3: } Consider the following prior distribution for $p$, a $75-25\%$ mixture of a $\textrm{Beta}(2,8)$ and a $\textrm{Beta}(8,2)$ prior distribution. Plot this prior distribution and compare it to the priors in Exercise 1 and Exercise 2. Describe what sort of prior opinion this may represent.
+$$
+\pi(p) = \frac{1}{4}\frac{\Gamma(10)}{\Gamma(2)\Gamma(8)}[3p(1-p)^7 + p^7(1-p)],
+$$
+```{r}
+a1 <- 2; b1 <- 8;
+a2 <- 8; b2 <- 2;
+n <- 43; y <- 15;
+S <- 10000
+
+mixture <- function(p){
+  0.75*dbeta(p, a1, b1) + 0.25*dbeta(p, a2, b2)
+  }
+
+ggplot(data = data.frame(p = c(0,1)), aes(p)) + 
+  stat_function(fun = mixture, aes(color = "prior")) +
+  ylab("Density") +
+  ggtitle("Mixture prior")
+
+```
+
+The mixture distribution looks exactly like a combination of the two Beta distributions.  It looks more similar to the Beta(2,8) distribution than the Beta(8,2) distribution, which makes sense, because it is 75\% Beta(2,8) and only 25\% Beta(8,2). This prior could be used when there are two competing prior beliefs with given weights.  
+
+One can also plot the three plots in one figure.
+
+```{r}
+p <- seq(0.001, 0.999, length = 1000)
+mixture <- 0.75*dbeta(p, 2, 8) + 0.25*dbeta(p, 8, 2)
+
+ggplot(data = data.frame(p, mixture), aes(x = p, y = mixture)) +
+  geom_line() +
+  stat_function(fun = dbeta, args = list(shape1 = 2, shape2 = 8), aes(color = "Beta(2,8)")) +
+  stat_function(fun = dbeta, args = list(shape1 = 8, shape2 = 2), aes(color = "Beta(8,2)")) +
+  ylab("Density")+
+  ggtitle("Three priors")
+```
+
+#### \textcolor{Bittersweet}{Grade for Exercise 3: /5} 
+#### \textcolor{Bittersweet}{Comments: }
+
+  
