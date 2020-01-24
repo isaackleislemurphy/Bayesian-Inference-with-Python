@@ -28,3 +28,5 @@
     - write a Gibbs sampler
     
 3. Create and maintain a jupyter notebook to record your progress
+
+4. Check out the posted GibbsExample.ipynb and compare it to the posted F19MATH347_GibbsMCMC_R.pdf (pages 4-6), and please help out debugging the GibbsExample.ipynb code!
