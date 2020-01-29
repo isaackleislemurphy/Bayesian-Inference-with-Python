@@ -30,3 +30,11 @@
 3. Create and maintain a jupyter notebook to record your progress
 
 4. Check out the posted GibbsExample.ipynb and compare it to the posted F19MATH347_GibbsMCMC_R.pdf (pages 4-6), and please help out debugging the GibbsExample.ipynb code!
+
+## To-dos before Wednesday 2/5/2020
+
+1. Explore how to write a loop correctly (should we do range(0, S-1) or something else?). Note that one row contains 0's only as of right now.
+
+2. Explore different plotting methods, including density plots, scatter plots etc.
+
+3. Reproduce MATH 347 Lab 1 in a juptyer notebook. Please use markdown cells for texts (use appropriate markdown syntax for headings, equations etc.) and use code cells for Python scripts.
